@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>競合SNSリサーチツール</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="dashboard">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Competitive Intelligence</p>
+          <h1>競合SNSリサーチツール</h1>
+          <p class="lead">SNSごとの伸びている切り口を比較し、次に試す投稿案まで整理。</p>
+        </div>
+        <form class="search-box" id="researchForm">
+          <input name="target" value="AI副業 チャンネル" />
+          <button type="submit">分析する</button>
+        </form>
+      </header>
+
+      <section class="platform-strip" id="platformTabs" aria-label="SNS">
+        <button class="is-active youtube" type="button" data-sns="YouTube">YouTube</button>
+        <button class="instagram" type="button" data-sns="Instagram">Instagram</button>
+        <button class="threads" type="button" data-sns="Threads">Threads</button>
+        <button class="note" type="button" data-sns="note">note</button>
+      </section>
+
+      <section class="grid">
+        <article class="panel hero-panel">
+          <div class="panel-head">
+            <p class="eyebrow" id="platformLabel">YouTube</p>
+            <span id="status">READY</span>
+          </div>
+          <h2 id="researchTitle">YouTube分析</h2>
+          <div class="metric-grid" id="metricGrid"></div>
+        </article>
+
+        <article class="panel chart-panel">
+          <h2>反応が出る要素</h2>
+          <div class="bar-list" id="barList"></div>
+        </article>
+
+        <article class="panel wide">
+          <h2>伸びている切り口</h2>
+          <div class="insight-list" id="insightList"></div>
+        </article>
+
+        <article class="panel wide">
+          <h2>次に試す投稿案</h2>
+          <div class="idea-list" id="ideaList"></div>
+        </article>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
