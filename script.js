@@ -7,8 +7,16 @@ const metricGrid = document.querySelector("#metricGrid");
 const barList = document.querySelector("#barList");
 const insightList = document.querySelector("#insightList");
 const ideaList = document.querySelector("#ideaList");
+const competitorList = document.querySelector("#competitorList");
+const addCompetitorButton = document.querySelector("#addCompetitorButton");
+const copyReportButton = document.querySelector("#copyReportButton");
+const downloadCsvButton = document.querySelector("#downloadCsvButton");
 
 let activeSns = "YouTube";
+let competitors = [
+  { name: "AI副業チャンネルA", url: "https://youtube.com/@sample-a", memo: "実演先見せが強い" },
+  { name: "AI活用ラボB", url: "https://youtube.com/@sample-b", memo: "保存版の導線が強い" },
+];
 
 const data = {
   YouTube: {
@@ -92,6 +100,55 @@ function render() {
   ideaList.innerHTML = current.ideas
     .map(([title, body]) => `<article class="idea"><strong>${title}</strong><span>${body}</span></article>`)
     .join("");
+  renderCompetitors();
+  saveState();
+}
+
+function renderCompetitors() {
+  competitorList.innerHTML = competitors
+    .map(
+      (competitor, index) => `
+        <div class="competitor-row">
+          <input data-index="${index}" data-field="name" value="${competitor.name}" aria-label="アカウント名" />
+          <input data-index="${index}" data-field="url" value="${competitor.url}" aria-label="URL" />
+          <input data-index="${index}" data-field="memo" value="${competitor.memo}" aria-label="メモ" />
+          <button type="button" data-remove="${index}">削除</button>
+        </div>
+      `,
+    )
+    .join("");
+}
+
+function saveState() {
+  localStorage.setItem("codex-sns-research-demo-v2", JSON.stringify({ activeSns, competitors }));
+}
+
+function loadState() {
+  const saved = localStorage.getItem("codex-sns-research-demo-v2");
+  if (!saved) return;
+  try {
+    const parsed = JSON.parse(saved);
+    if (parsed.activeSns && data[parsed.activeSns]) activeSns = parsed.activeSns;
+    if (Array.isArray(parsed.competitors)) competitors = parsed.competitors;
+  } catch {
+    localStorage.removeItem("codex-sns-research-demo-v2");
+  }
+}
+
+function reportText() {
+  const current = data[activeSns];
+  return [
+    `# ${activeSns} 競合SNSリサーチ`,
+    "",
+    "## 競合アカウント",
+    ...competitors.map((item) => `- ${item.name}: ${item.url} / ${item.memo}`),
+    "",
+    "## 伸びている切り口",
+    ...current.insights.map(([title, body]) => `- ${title}: ${body}`),
+    "",
+    "## 次に試す投稿案",
+    ...current.ideas.map(([title, body]) => `- ${title}: ${body}`),
+  ].join("\n");
 }
 
 platformTabs.forEach((button) => {
@@ -102,10 +159,54 @@ platformTabs.forEach((button) => {
   });
 });
 
+competitorList.addEventListener("input", (event) => {
+  const index = Number(event.target.dataset.index);
+  const field = event.target.dataset.field;
+  if (!Number.isNaN(index) && field) {
+    competitors[index][field] = event.target.value;
+    saveState();
+  }
+});
+
+competitorList.addEventListener("click", (event) => {
+  const index = Number(event.target.dataset.remove);
+  if (!Number.isNaN(index)) {
+    competitors.splice(index, 1);
+    renderCompetitors();
+    saveState();
+  }
+});
+
+addCompetitorButton.addEventListener("click", () => {
+  competitors.push({ name: `${activeSns}競合`, url: "https://", memo: "伸びている投稿をメモ" });
+  renderCompetitors();
+  saveState();
+});
+
+copyReportButton.addEventListener("click", () => {
+  navigator.clipboard?.writeText(reportText());
+  statusLabel.textContent = "COPIED";
+});
+
+downloadCsvButton.addEventListener("click", () => {
+  const rows = [["platform", "name", "url", "memo"], ...competitors.map((item) => [activeSns, item.name, item.url, item.memo])];
+  const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${activeSns}-research.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  statusLabel.textContent = "EXPORTED";
+});
+
 researchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   statusLabel.textContent = "ANALYZED";
   render();
 });
 
+loadState();
+platformTabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.sns === activeSns));
 render();

@@ -43,6 +43,14 @@
         </article>
 
         <article class="panel wide">
+          <div class="panel-head">
+            <h2>競合アカウント</h2>
+            <button type="button" id="addCompetitorButton">追加</button>
+          </div>
+          <div class="competitor-list" id="competitorList"></div>
+        </article>
+
+        <article class="panel wide">
           <h2>伸びている切り口</h2>
           <div class="insight-list" id="insightList"></div>
         </article>
@@ -50,6 +58,10 @@
         <article class="panel wide">
           <h2>次に試す投稿案</h2>
           <div class="idea-list" id="ideaList"></div>
+          <div class="export-actions">
+            <button type="button" id="copyReportButton">レポートをコピー</button>
+            <button type="button" id="downloadCsvButton">CSV出力</button>
+          </div>
         </article>
       </section>
     </main>
