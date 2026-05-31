@@ -2,6 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>競合SNSリサーチツール</title>
     <link rel="stylesheet" href="styles.css" />
@@ -12,7 +13,7 @@
         <div>
           <p class="eyebrow">Competitive Intelligence</p>
           <h1>競合SNSリサーチツール</h1>
-          <p class="lead">SNSごとの伸びている切り口を比較し、次に試す投稿案まで整理。</p>
+          <p class="lead">SNSごとの伸びている切り口を比較し、次に試す投稿案まで整理。入力内容はブラウザ内に保存されます。</p>
         </div>
         <form class="search-box" id="researchForm">
           <input name="target" value="AI副業 チャンネル" />

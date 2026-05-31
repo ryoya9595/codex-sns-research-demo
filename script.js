@@ -18,6 +18,15 @@ let competitors = [
   { name: "AI活用ラボB", url: "https://youtube.com/@sample-b", memo: "保存版の導線が強い" },
 ];
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 const data = {
   YouTube: {
     metrics: [["伸びている尺", "18-32分"], ["強い導入", "実演先見せ"], ["視聴者の不安", "何から触ればいいか"]],
@@ -82,23 +91,23 @@ function render() {
   platformLabel.textContent = activeSns;
   researchTitle.textContent = `${activeSns}分析`;
   metricGrid.innerHTML = current.metrics
-    .map(([label, value]) => `<div class="metric"><span>${label}</span><strong>${value}</strong></div>`)
+    .map(([label, value]) => `<div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`)
     .join("");
   barList.innerHTML = current.bars
     .map(
       ([label, value]) => `
         <div class="bar-row">
-          <div class="bar-label"><span>${label}</span><span>${value}%</span></div>
+          <div class="bar-label"><span>${escapeHtml(label)}</span><span>${escapeHtml(value)}%</span></div>
           <div class="bar-track"><div class="bar-fill" style="width:${value}%"></div></div>
         </div>
       `,
     )
     .join("");
   insightList.innerHTML = current.insights
-    .map(([title, body]) => `<article class="insight"><strong>${title}</strong><span>${body}</span></article>`)
+    .map(([title, body]) => `<article class="insight"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(body)}</span></article>`)
     .join("");
   ideaList.innerHTML = current.ideas
-    .map(([title, body]) => `<article class="idea"><strong>${title}</strong><span>${body}</span></article>`)
+    .map(([title, body]) => `<article class="idea"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(body)}</span></article>`)
     .join("");
   renderCompetitors();
   saveState();
@@ -109,9 +118,9 @@ function renderCompetitors() {
     .map(
       (competitor, index) => `
         <div class="competitor-row">
-          <input data-index="${index}" data-field="name" value="${competitor.name}" aria-label="アカウント名" />
-          <input data-index="${index}" data-field="url" value="${competitor.url}" aria-label="URL" />
-          <input data-index="${index}" data-field="memo" value="${competitor.memo}" aria-label="メモ" />
+          <input data-index="${index}" data-field="name" value="${escapeHtml(competitor.name)}" aria-label="アカウント名" />
+          <input data-index="${index}" data-field="url" value="${escapeHtml(competitor.url)}" aria-label="URL" />
+          <input data-index="${index}" data-field="memo" value="${escapeHtml(competitor.memo)}" aria-label="メモ" />
           <button type="button" data-remove="${index}">削除</button>
         </div>
       `,
