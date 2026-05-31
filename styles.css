@@ -84,6 +84,31 @@ h2 { font-size: 22px; }
   font-size: 16px;
 }
 
+.privacy-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 760px;
+  margin-top: 14px;
+  border: 1px solid #dbe5f4;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.72);
+  color: #526176;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+  padding: 10px 12px;
+}
+
+.privacy-note button {
+  min-height: 32px;
+  flex: 0 0 auto;
+  background: #eef2ff;
+  color: var(--blue);
+  font-size: 12px;
+  padding: 0 10px;
+}
+
 .search-box {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -280,4 +305,5 @@ input {
   .header, .grid, .platform-strip { grid-template-columns: 1fr; }
   .search-box { grid-template-columns: 1fr; }
   .competitor-row { grid-template-columns: 1fr; }
+  .privacy-note { align-items: stretch; flex-direction: column; }
 }

@@ -11,6 +11,7 @@ const competitorList = document.querySelector("#competitorList");
 const addCompetitorButton = document.querySelector("#addCompetitorButton");
 const copyReportButton = document.querySelector("#copyReportButton");
 const downloadCsvButton = document.querySelector("#downloadCsvButton");
+const clearDataButton = document.querySelector("#clearDataButton");
 
 let activeSns = "YouTube";
 let competitors = [
@@ -208,6 +209,11 @@ downloadCsvButton.addEventListener("click", () => {
   a.click();
   URL.revokeObjectURL(url);
   statusLabel.textContent = "EXPORTED";
+});
+
+clearDataButton.addEventListener("click", () => {
+  localStorage.removeItem("codex-sns-research-demo-v2");
+  statusLabel.textContent = "CLEARED";
 });
 
 researchForm.addEventListener("submit", (event) => {
